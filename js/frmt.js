@@ -1,7 +1,7 @@
 
 btn = document.querySelector('#btn_pesquisa')
 cx_user = document.querySelector('#cx_pesquisa')
-btn.addEventListener('click', inicia_filtro)
+btn.addEventListener('click', funcao_filtro_btn)
 btn.addEventListener('mousemove', foco_btn)
 btn.addEventListener('mouseout', ret_btn)
 cx_user.addEventListener('keyup', funcao_filtro)
@@ -54,30 +54,50 @@ function ret_btn(){
 }
 
 
+function funcao_filtro_btn(event){
+
+	if (event.target.value === '') {
+					identifica_value = 0					
+		} else {
+			identifica_value = 1					
+		}
+
+		inicia_filtro()	
+}
+
+
 function funcao_filtro(event){
 
 		if (event.key === 'Enter'){
-				inicia_filtro()
+			identifica_value = 1
+			inicia_filtro()	
 		}
 
-	//console.log()
+		if (event.key === 'Backspace'){
+				if (event.target.value === '') {
+					identifica_value = 0
+					inicia_filtro()	
+				}
+		}
+		
+
+//Backspace
+	console.log(event.key)
 
 }
 
 function inicia_filtro(){
 
-		if (cx_user.value === '') {
-			alert('cx_vazia')
-			return;
-		}
 
+
+console.log('ok')
 	const dados_filtrados =  users.filter(function(item_retornado){
 		return item_retornado.nome.includes(cx_user.value.toUpperCase())
 	})
 
 	
 
-	if ( dados_filtrados.length === 0) {
+	if ( dados_filtrados.length === 0 || identifica_value === 0 ) {
 		titulo_table.innerHTML = 'Nenhum usuário Filtrado';
 		tabela.innerHTML = '';
 		value_masc.innerHTML = 0
@@ -87,6 +107,12 @@ function inicia_filtro(){
 
 		return;	
 	}
+
+
+		if (cx_user.value === '') {
+			alert('cx_vazia')
+			return;
+		}
 
 			
 			let itm =''
